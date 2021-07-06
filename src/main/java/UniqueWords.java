@@ -5,24 +5,9 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class UniqueWords {
-
-    private static final String WORD_FILE = "C:\\Users\\Yurko\\Desktop\\text.txt";
-
-
-    public static void main(String[] args) {
-
-        Map<String, Integer> wordMap = wordsReaderAndCounter();
-
-        List<Map.Entry<String, Integer>> list = sortByValue(wordMap);
-
-        for (Map.Entry<String, Integer> entry : list) {
-
-            System.out.println(entry.getKey() + " = " + entry.getValue());
-        }
-    }
-
-
-    private static Map<String, Integer> wordsReaderAndCounter() {
+    private static final String WORD_FILE = "C:\\Users\\Yurko\\Desktop\\mlnwords.txt";
+    private static long MAX_TOTAL_MEMORY_USED = 0;
+    private Map<String, Integer> wordsReaderAndCounter() {
 
         FileInputStream fis;
 
@@ -44,9 +29,15 @@ public class UniqueWords {
 
             while ((line = br.readLine()) != null) {
 
+                if (MAX_TOTAL_MEMORY_USED < Runtime.getRuntime().totalMemory())
+                    MAX_TOTAL_MEMORY_USED = Runtime.getRuntime().totalMemory();
+
                 StringTokenizer st = new StringTokenizer(line , "\",.; ");
 
                 while (st.hasMoreTokens()) {
+
+                    if (MAX_TOTAL_MEMORY_USED < Runtime.getRuntime().totalMemory())
+                        MAX_TOTAL_MEMORY_USED = Runtime.getRuntime().totalMemory();
 
                     String tmp = st.nextToken().toLowerCase();
 
@@ -82,8 +73,7 @@ public class UniqueWords {
 
         return wordsMap;
     }
-
-    private static List<Map.Entry<String, Integer>> sortByValue(Map<String, Integer> mapForSorting) {
+    private List<Map.Entry<String, Integer>> sortByValue(Map<String, Integer> mapForSorting) {
 
         Set<Map.Entry<String, Integer>> set = mapForSorting.entrySet();
 
@@ -94,7 +84,33 @@ public class UniqueWords {
         return list;
     }
 
+
+    public static void main(String[] args) {
+
+        UniqueWords uniqueWords = new UniqueWords();
+
+        long start = System.currentTimeMillis();
+
+        System.out.println("Total JVM memory before start: " + Runtime.getRuntime().totalMemory());
+
+        Map<String, Integer> wordMap = uniqueWords.wordsReaderAndCounter();
+
+        List<Map.Entry<String, Integer>> list = uniqueWords.sortByValue(wordMap);
+
+        for (Map.Entry<String, Integer> entry : list) {
+
+            System.out.println(entry.getKey() + " = " + entry.getValue());
+
+        }
+
+        long finish = System.currentTimeMillis();
+
+        System.out.println("Total JVM memory after finish: " + Runtime.getRuntime().totalMemory());
+
+        System.out.println("Max total JVM memory: " + MAX_TOTAL_MEMORY_USED);
+
+        System.out.println("Final time: " + (finish - start) + " sec");
+
+    }
+
 }
-
-
-
