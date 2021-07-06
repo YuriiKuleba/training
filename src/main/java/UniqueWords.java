@@ -109,7 +109,7 @@ public class UniqueWords {
 
         System.out.println("Max total JVM memory: " + MAX_TOTAL_MEMORY_USED);
 
-        System.out.println("Final time: " + (finish - start) + " sec");
+        System.out.println("Final time: " + (finish - start) + " milliseconds");
 
     }
 
