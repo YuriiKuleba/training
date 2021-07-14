@@ -5,7 +5,7 @@ import java.util.*;
 
 class UniqueWordsStreams {
 
-    private static final String WORD_FILE = "C:\\Users\\Yurko\\Desktop\\text.txt";
+    private static final String WORD_FILE = "src/main/resources/mlnwords.txt";
 
 
     public static void main(String[] args) {
@@ -25,8 +25,6 @@ class UniqueWordsStreams {
 
         Map<String, Integer> wordsMap = new HashMap<>();
 
-//        long maxTotalMemoryUsed = 0;
-
         try {
 
             Files.lines(Paths.get(WORD_FILE))
@@ -35,11 +33,7 @@ class UniqueWordsStreams {
 
                     .forEach(stringTokenizer -> {
 
-//                        System.out.println("Max JVM memory: " + Runtime.getRuntime().totalMemory());
-
                         while (stringTokenizer.hasMoreTokens()) {
-
-//                            System.out.println("Max JVM memory: " + Runtime.getRuntime().totalMemory());
 
                             String tmp = stringTokenizer.nextToken().toLowerCase();
 
