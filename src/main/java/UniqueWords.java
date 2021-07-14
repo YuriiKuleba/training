@@ -63,17 +63,20 @@ public class UniqueWords {
         return wordsMap;
     }
 
-    private Long converter(Long bytes) {
+    private Long memoryConverter(Long bytes) {
         long size = 1024;
-        long toKB = bytes / size;
-        return toKB / size;
+        long toMB = bytes / size;
+        return toMB / size;
+    }
+    private Double timeConverter(Long bytes) {
+        return bytes * 0.001;
     }
 
     public static void main(String[] args) throws InterruptedException {
         UniqueWords uniqueWords = new UniqueWords();
         //Count total memory at the start of program
         long start = System.currentTimeMillis();
-        System.out.println("Total JVM memory before start: " + uniqueWords.converter(Runtime.getRuntime().totalMemory()) + " mb");
+        System.out.println("Total JVM memory before start: " + uniqueWords.memoryConverter(Runtime.getRuntime().totalMemory()) + " mb");
         Thread.sleep(3000);
         //Generate 1mln unique words to file
         uniqueWords.generateMassiveTextFile();
@@ -83,8 +86,8 @@ public class UniqueWords {
 
         //Count total memory at the end of program
         long finish = System.currentTimeMillis();
-        System.out.println("Total JVM memory after finish: " + uniqueWords.converter(Runtime.getRuntime().totalMemory()) + " mb");
-        System.out.println("Total execution time of the program: " + (finish - start) + " milliseconds");
+        System.out.println("Total JVM memory after finish: " + uniqueWords.memoryConverter(Runtime.getRuntime().totalMemory()) + " mb");
+        System.out.println("Total execution time of the program: " + uniqueWords.timeConverter(finish - start) + " seconds");
         System.out.println("File consist of: " + WORD_COUNTER + " words");
 
         uniqueWords.generateRandomWord();
